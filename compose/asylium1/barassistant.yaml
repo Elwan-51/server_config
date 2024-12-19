@@ -12,7 +12,7 @@ services:
     environment:
       - MEILI_MASTER_KEY=$MEILI_MASTER_KEY
       - MEILI_ENV=production
-    #labels:
+    labels:
       # Traefik labels
       - "traefik.enable=true"
       ## HTTP Routers
@@ -24,6 +24,12 @@ services:
       ## HTTP Services
       - "traefik.http.routers.meilisearch-rtr.service=meilisearch-svc"
       - "traefik.http.services.meilisearch-svc.loadbalancer.server.port=7700"
+      - homepage.group=Bar
+      - homepage.description=Meilisearch
+      - homepage.name=Meilisearch
+      - homepage.icon=https://bar.asylium.app/favicon.png
+      - homepage.href=https://$URI_MEILISEARCH.$DOMAINNAME_1
+      - homepage.siteMonitor=https://$URI_MEILISEARCH.$DOMAINNAME_1
 
   bar-assistant:
     image: barassistant/server:v4
@@ -46,7 +52,7 @@ services:
       - CACHE_DRIVER=file #redis # Change to "file" if not using redis
       - SESSION_DRIVER=file #redis # Change to "file" if not using redis
       - ALLOW_REGISTRATION=true
-    #labels:
+    labels:
       # Traefik labels
       - "traefik.enable=true"
       ### HTTP Routers
@@ -58,6 +64,13 @@ services:
       ### HTTP Services
       - "traefik.http.routers.bar-assistant-rtr.service=bar-assistant-svc"
       - "traefik.http.services.bar-assistant-svc.loadbalancer.server.port=8080"
+      - homepage.group=Bar
+      - homepage.description=Bar Assistant API
+      - homepage.name=Bar Assistant API
+      - homepage.icon=https://bar.asylium.app/favicon.png
+      - homepage.href=https://$URI_BARAPI.$DOMAINNAME_1
+      - homepage.siteMonitor=https://$URI_BARAPI.$DOMAINNAME_1
+
 
   salt-rim_barassistant:
     image: barassistant/salt-rim:v3
@@ -84,6 +97,12 @@ services:
       ## HTTP Services
       - "traefik.http.routers.salt-rim_barassistant-rtr.service=salt-rim_barassistant-svc"
       - "traefik.http.services.salt-rim_barassistant-svc.loadbalancer.server.port=8080"
+      - homepage.group=Bar
+      - homepage.description=Bar Assistant
+      - homepage.name=Bar Assistant
+      - homepage.icon=https://bar.asylium.app/favicon.png
+      - homepage.href=https://$URI_BARASSISTANT.$DOMAINNAME_1
+      - homepage.siteMonitor=https://$URI_BARASSISTANT.$DOMAINNAME_1
 
 networks:
   bar_network:
