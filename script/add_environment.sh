@@ -1,6 +1,7 @@
 #! /bin/bash
 
 path="/home/ubuntu/docker/terraform"
+path_compose="/home/ubuntu/docker"
 
 declare -u APP=$1
 
@@ -15,3 +16,11 @@ echo "  type = local.envs[\"TYPE_$APP\"]">> $file_path
 echo "  ttl = 1">> $file_path
 echo "  proxied = true">> $file_path
 echo "}">> $file_path
+
+
+
+cd $path
+terraform apply -auto-approve
+
+cd $path_compose
+docker compose up -d $1
