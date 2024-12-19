@@ -3,12 +3,20 @@
 path="/home/ubuntu/docker/terraform"
 path_compose="/home/ubuntu/docker"
 
-declare -u APP=$1
+for arg in "$@"
+do
 
-file_path=$path/$1"_dns.tf"
+
+if [ $arg == "-h" ] || [ $arg == "--help" ]; then
+    echo "Usage: delete_environment.sh [environment_name]"
+    exit 0
+else
+declare -u APP=$arg
+
+file_path=$path/$arg"_dns.tf"
 
 
-echo "resource \"cloudflare_record\" \"$1_dns\" {">> $file_path
+echo "resource \"cloudflare_record\" \""$arg"_dns\" {"> $file_path
 echo "  zone_id = data.cloudflare_zone.asylium.id">> $file_path
 echo "  name = local.envs[\"URI_$APP\"]">> $file_path
 echo "  content = local.envs[\"TARGET_$APP\"]">> $file_path
@@ -23,4 +31,7 @@ cd $path
 terraform apply -auto-approve
 
 cd $path_compose
-docker compose up -d $1
+docker compose up -d $arg
+
+fi
+done
