@@ -3,3 +3,8 @@ appdata/paperless/*
 appdata/traefik/acme/*
 secrets/*
 .env
+*_dns.tf
+.terraform
+terraform.tfstate
+terraform.tfstate.backup
+.terraform.lock.hcl
