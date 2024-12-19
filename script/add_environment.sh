@@ -31,7 +31,7 @@ cd $path
 terraform apply -auto-approve
 
 cd $path_compose
-docker compose up -d $arg
+docker compose --profile $arg up -d 
 
 fi
 done

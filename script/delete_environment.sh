@@ -14,6 +14,6 @@ do
         cd $path
         terraform apply -auto-approve
         cd $path_compose
-        docker compose down $arg
+        docker compose --profile $arg down
     fi
 done
