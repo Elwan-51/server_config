@@ -32,7 +32,7 @@ CLOUDFLARE_IPS=173.245.48.0/20,103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,141
 
 ##### URI
 
-# Use to definend the DNS record for app. Change APP to the corresponding name. Can be repetead for multiple apps with different name.
+# Use to defined the DNS record for app. Change APP to the corresponding name. Can be repetead for multiple apps with different name.
 
 URI_APP="app"
 TARGET_APP="target.app"
