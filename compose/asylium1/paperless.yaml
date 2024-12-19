@@ -24,7 +24,7 @@ services:
     networks:
       paperless:
 
-  webserver:
+  paperless:
     profiles: ["all", "paperless"]
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     container_name: paperless-ui

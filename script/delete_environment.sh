@@ -12,7 +12,7 @@ do
         rm $path/$arg"_dns.tf"
 
         cd $path
-        terraform destroy -auto-approve
+        terraform apply -auto-approve
         cd $path_compose
         docker compose down $arg
     fi
