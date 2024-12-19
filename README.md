@@ -50,7 +50,6 @@ It will allow you to use the following commands:
 - add_environment : Add and start and application with it's domain name, docker and corresponding rules
 - delete_environment : Remove and stop an application with it's domain name, docker
 
-
 ### Setup Terraform
 
 ```bash
