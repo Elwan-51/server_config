@@ -27,9 +27,9 @@ services:
 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.homepage-rtr.rule=Host(`$URI_HOMEPAGE.$DOMAINNAME_1`)"
+      - "traefik.http.routers.homepage-rtr.rule=Host(`$DOMAINNAME_1`) || Host(`$URI_HOMEPAGE.$DOMAINNAME_1`)"
       - "traefik.http.routers.homepage-rtr.entrypoints=websecure"
       - "traefik.http.routers.homepage-rtr.tls=true"
       - "traefik.http.routers.homepage-rtr.service=homepage-svc"
       - "traefik.http.services.homepage-svc.loadbalancer.server.port=3000"
-      - "traefik.http.routers.homepage-rtr.middlewares=auth@file"
+      - "traefik.http.routers.homepage-rtr.middlewares=chain-auth@file"

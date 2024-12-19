@@ -2,7 +2,7 @@ services:
   # Traefik 2 - Reverse Proxy
   traefik:
     container_name: traefik
-    image: traefik:v3.2.0
+    image: traefik:v3.2.2
     security_opt:
       - no-new-privileges:true
     restart: always
@@ -27,7 +27,7 @@ services:
       # - --entryPoints.ws.http.redirections.entryPoint.permanent=true
       - --api=true
       - --api.dashboard=true
-      # - --api.insecure=true
+      #- --api.insecure=true
       #- --serversTransport.insecureSkipVerify=true
       # Allow these IPs to set the X-Forwarded-* headers - Cloudflare IPs: https://www.cloudflare.com/ips/
       - --entrypoints.websecure.forwardedHeaders.trustedIPs=$CLOUDFLARE_IPS,$LOCAL_IPS
@@ -48,8 +48,8 @@ services:
       - --entrypoints.websecure.http.tls.options=tls-opts@file
       # Add myresolver as default certresolver for all services. Also enables TLS and no need to specify on individual services
       - --entrypoints.websecure.http.tls.certresolver=myresolver
-      # - --entrypoints.websecure.http.tls.domains[1].main=$DOMAINNAME_2 # Pulls main cert for second domain
-      # - --entrypoints.websecure.http.tls.domains[1].sans=*.$DOMAINNAME_2 # Pulls wildcard cert for second domain
+      #- --entrypoints.websecure.http.tls.domains[0].main=$DOMAINNAME_1 # Pulls main cert for second domain
+      #- --entrypoints.websecure.http.tls.domains[0].sans=*.$DOMAINNAME_1 # Pulls wildcard cert for second domain
       - --providers.file.directory=/rules # Load dynamic configuration from one or more .toml or .yml files in a directory
       - --providers.file.watch=true # Only works on top level files in the rules folder
       #- --certificatesResolvers.myresolver.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory # LetsEncrypt Staging Server - uncomment when testing
@@ -80,10 +80,12 @@ services:
       - DOMAINNAME_1
     
     labels:
-      - "traefik.enamble=true"
-      - "traefik.http.routers.traefik-rtr.rule=Host(`$URI_TRAEFIK.$DOMAINNAME_1`)"
+      - "traefik.enable=true"
       - "traefik.http.routers.traefik-rtr.entrypoints=websecure"
+      - "traefik.http.routers.traefik-rtr.rule=Host(`$URI_TRAEFIK.$DOMAINNAME_1`)"
       - "traefik.http.routers.traefik-rtr.service=api@internal"
+      - "traefik.http.routers.traefik-rtr.middlewares=chain-auth@file"
+      
   auth:
     container_name: auth
     image: thomseddon/traefik-forward-auth:latest
@@ -102,14 +104,13 @@ services:
       LOG_LEVEL: debug
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.auth.entrypoints=http"
+      - "traefik.http.routers.auth.entrypoints=web"
       - "traefik.http.routers.auth.rule=Host(`$URI_AUTH.$DOMAINNAME_1`)"
-      - "traefik.http.middlewares.auth-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.auth.middlewares=auth-https-redirect"
-      - "traefik.http.routers.auth-secure.entrypoints=https"
+      - "traefik.http.middlewares.auth-https-redirect.redirectscheme.scheme=websecure"
+      - "traefik.http.routers.auth-secure.entrypoints=websecure"
       - "traefik.http.routers.auth-secure.rule=Host(`$URI_AUTH.$DOMAINNAME_1`)"
       - "traefik.http.routers.auth-secure.tls=true"
       - "traefik.http.routers.auth-secure.service=auth"
       - "traefik.http.services.auth.loadbalancer.server.port=4181"
-      - "traefik.docker.network=traefik"
+      - "traefik.docker.network=t_proxy"
     restart: unless-stopped

@@ -1,6 +1,6 @@
 http:
   middlewares:
-    auth:
+    middleware-auth:
       forwardAuth:
         address: http://auth:4181
         trustForwardHeader: true

@@ -1,0 +1,9 @@
+http:
+  middlewares:
+    chain-auth:
+      chain:
+        middlewares:
+          - middleware-https-redirectscheme
+          - middleware-secure-headers
+          - middleware-auth
+          - middleware-compress

@@ -55,6 +55,7 @@ services:
       - "traefik.http.routers.paperless-rtr.tls=true"
       - "traefik.http.routers.paperless-rtr.service=paperless-svc"
       - "traefik.http.services.paperless-svc.loadbalancer.server.port=8000"
+      - "traefik.http.routers.paperless-rtr.middlewares=chain-no-auth@file"
     networks:
       t_proxy:
       paperless:
