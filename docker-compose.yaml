@@ -32,3 +32,4 @@ include:
 - compose/$HOSTNAME/socker-proxy.yaml
 - compose/$HOSTNAME/homepage.yaml
 - compose/$HOSTNAME/paperless.yaml
+- compose/$HOSTNAME/barassistant.yaml
