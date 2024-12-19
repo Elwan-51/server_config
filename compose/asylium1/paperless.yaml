@@ -1,0 +1,62 @@
+services:
+  broker:
+    profiles: ["all", "paperless"]
+
+    image: docker.io/library/redis:7
+    container_name: parperless-server
+    restart: unless-stopped
+    volumes:
+      - $DOCKERDATA/paperless/paperless/data/broker:/data
+    networks:
+      paperless:
+
+  db:
+    profiles: ["all", "paperless"]
+    image: docker.io/library/postgres:16
+    container_name: parperless-db
+    restart: unless-stopped
+    volumes:
+      - $DOCKERDATA/paperless/postgres/data/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: paperless
+    networks:
+      paperless:
+
+  webserver:
+    profiles: ["all", "paperless"]
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless-ui
+    restart: unless-stopped
+    depends_on:
+      - db
+      - broker  
+    volumes:
+      - $DOCKERDATA/paperless/webserv/data/ui/data:/usr/src/paperless/data
+      - $DOCKERDATA/paperless/webserv/data/ui/media:/usr/src/paperless/media
+      - $DOCKERDATA/paperless/webserv/data/ui/export:/usr/src/paperless/export
+      - $DOCKERDATA/paperless/webserv/data/ui/consume:/usr/src/paperless/consume
+    environment:
+      PAPERLESS_REDIS: redis://broker:6379
+      PAPERLESS_DBHOST: db
+      PAPERLESS_URL: https://paperless.$DOMAINNAME_1
+      PAPERLESS_TIME_ZONE: Europe/Paris
+      PAPERLESS_OCR_LANGUAGE: fra
+      PAPERLESS_OCR_LANGUAGES: eng spa
+      PAPERLESS_APPS: ${PAPERLESS_APPS}
+      PAPERLESS_SOCIALACCOUNT_PROVIDERS: ${PAPERLESS_SOCIALACCOUNT_PROVIDERS}
+      PAPERLESS_REDIRECT_LOGIN_TO_SSO: true
+      PAPERLESS_DISABLE_REGULAR_LOGIN: true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.paperless-rtr.rule=Host(`$URI_PAPERLESS.$DOMAINNAME_1`)"
+      - "traefik.http.routers.paperless-rtr.entrypoints=websecure"
+      - "traefik.http.routers.paperless-rtr.tls=true"
+      - "traefik.http.routers.paperless-rtr.service=paperless-svc"
+      - "traefik.http.services.paperless-svc.loadbalancer.server.port=8000"
+    networks:
+      t_proxy:
+      paperless:
+networks:
+  paperless:

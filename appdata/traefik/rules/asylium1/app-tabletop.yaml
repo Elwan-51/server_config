@@ -1,0 +1,13 @@
+http:
+  routers:
+    tabletop-rtr:
+      rule: Host(`tabletop.asylium.app`)
+      entrypoints: websecure
+      service: tabletop-svc
+      tls:
+        certResolver: myresolver
+  services:
+    tabletop-svc:
+      loadBalancer:
+        servers:
+          - url: http://100.64.0.3:30000

@@ -1,0 +1,35 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    profiles: ["core", "all", "dashboard"]
+    networks:
+      t_proxy:
+      socket_proxy:
+        ipv4_address: 192.168.91.7
+    volumes:
+      - $DOCKERDATA/homepage/config:/app/config
+      - $DOCKERDATA/homepage/images:/app/images
+      - $DOCKERDATA/homepage/icons:/app/icons
+    secrets:
+      - headscale_secret
+      - paperless_api_key
+    environment:
+      TZ: $TZ
+      PUID: 1000
+      PGID: 1000
+      HOMEPAGE_VAR_DOMAINENAME: $DOMAINNAME_1
+      HOMEPAGE_FILE_HEADSCALE_SECRET: /run/secrets/headscale_secret
+      HOMEPAGE_FILE_PAPERLESS_API_KEY: /run/secrets/paperless_api_key
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homepage-rtr.rule=Host(`$URI_HOMEPAGE.$DOMAINNAME_1`)"
+      - "traefik.http.routers.homepage-rtr.entrypoints=websecure"
+      - "traefik.http.routers.homepage-rtr.tls=true"
+      - "traefik.http.routers.homepage-rtr.service=homepage-svc"
+      - "traefik.http.services.homepage-svc.loadbalancer.server.port=3000"
+      - "traefik.http.routers.homepage-rtr.middlewares=auth@file"

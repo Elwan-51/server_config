@@ -1,0 +1,5 @@
+*.log
+appdata/paperless/*
+appdata/traefik/acme/*
+secrets/*
+.env

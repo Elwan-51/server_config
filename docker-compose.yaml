@@ -1,0 +1,33 @@
+########################### NETWORKS
+networks:
+  default:
+    driver: bridge
+  socket_proxy:
+    name: socket_proxy
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.91.0/24
+  t_proxy:
+    name: t_proxy
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.90.0/24
+
+      
+########################### SECRET
+secrets:
+  headscale_secret:
+    file: $DOCKERDIR/secrets/headscale_secret
+  paperless_api_key:
+    file: $DOCKERDIR/secrets/paperless_api_key
+
+
+include:
+########################### SERVICES
+
+- compose/$HOSTNAME/traefik.yaml
+- compose/$HOSTNAME/socker-proxy.yaml
+- compose/$HOSTNAME/homepage.yaml
+- compose/$HOSTNAME/paperless.yaml
