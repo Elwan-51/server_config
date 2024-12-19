@@ -16,14 +16,12 @@ services:
       - $DOCKERDATA/homepage/icons:/app/icons
     secrets:
       - headscale_secret
-      - paperless_api_key
     environment:
       TZ: $TZ
       PUID: 1000
       PGID: 1000
       HOMEPAGE_VAR_DOMAINENAME: $DOMAINNAME_1
       HOMEPAGE_FILE_HEADSCALE_SECRET: /run/secrets/headscale_secret
-      HOMEPAGE_FILE_PAPERLESS_API_KEY: /run/secrets/paperless_api_key
 
     labels:
       - "traefik.enable=true"
@@ -33,3 +31,9 @@ services:
       - "traefik.http.routers.homepage-rtr.service=homepage-svc"
       - "traefik.http.services.homepage-svc.loadbalancer.server.port=3000"
       - "traefik.http.routers.homepage-rtr.middlewares=chain-auth@file"
+      - homepage.group=Documents
+      - homepage.description=Homepage
+      - homepage.name=Homepage
+      - homepage.icon=homepage.png
+      - homepage.href=https://$URI_HOMEPAGE.$DOMAINNAME_1
+      - homepage.siteMonitor=https://$URI_HOMEPAGE.$DOMAINNAME_1

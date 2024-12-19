@@ -7,7 +7,7 @@
         href: https://tabletop.{{HOMEPAGE_VAR_DOMAINENAME}}
         description : Tabletop application
         icon: https://tabletop.{{HOMEPAGE_VAR_DOMAINENAME}}/icons/vtt-512.png
-        site: https://tabletop.{{HOMEPAGE_VAR_DOMAINENAME}}
+        siteMonitor: https://tabletop.{{HOMEPAGE_VAR_DOMAINENAME}}
         widget:
             type: customapi
             url: https://tabletop.{{HOMEPAGE_VAR_DOMAINENAME}}/api/status
@@ -24,18 +24,12 @@
                   label: World
                   format: text
     - Minecraft Asylium:
+        icon: minecraft.png
+        description: Minecraft server
         widget:
             type: minecraft
             url: udp://asylium.omgcraft.fr
-    - Paperless:
-        href: https://paperless.{{HOMEPAGE_VAR_DOMAINENAME}}
-        description: Paperless application
-        icon: paperless.png
-        site: https://paperless.{{HOMEPAGE_VAR_DOMAINENAME}}
-        widget:
-            type: paperlessngx
-            url: https://paperless.{{HOMEPAGE_VAR_DOMAINENAME}}
-            key: {{HOMEPAGE_FILE_PAPERLESS_API_KEY}}
+
 - VPN:
     - PC Elwan:
         widget:

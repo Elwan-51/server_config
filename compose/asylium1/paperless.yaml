@@ -56,6 +56,15 @@ services:
       - "traefik.http.routers.paperless-rtr.service=paperless-svc"
       - "traefik.http.services.paperless-svc.loadbalancer.server.port=8000"
       - "traefik.http.routers.paperless-rtr.middlewares=chain-no-auth@file"
+      - homepage.group=Documents
+      - homepage.description=Paperless application
+      - homepage.name=Paperless
+      - homepage.icon=paperless.png
+      - homepage.href=https://$URI_PAPERLESS.$DOMAINNAME_1
+      - homepage.siteMonitor=https://$URI_PAPERLESS.$DOMAINNAME_1
+      - homepage.widget.type=paperlessngx
+      - homepage.widget.url=https://$URI_PAPERLESS.$DOMAINNAME_1
+      - homepage.widget.key=$PAPERLESS_API_KEY
     networks:
       t_proxy:
       paperless:

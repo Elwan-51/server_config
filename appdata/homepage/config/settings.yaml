@@ -5,3 +5,30 @@
 providers:
   openweathermap: openweathermapapikey
   weatherapi: weatherapiapikey
+
+title: Asylium Home
+theme: dark
+color: slate
+useEqualHeights: true
+showStats: true
+statusStyle: "dot"
+headerStyle: boxed
+
+quicklaunch:
+  searchDescriptions: true
+  hideInternetSearch: true
+  showSearchSuggestions: true
+  provider: google 
+
+layout:
+  Bookmarks:
+  Gaming:
+    tab: Gaming
+    style: row
+    columns: 3
+  Documents:
+    tab: Documents
+    style: row
+    columns: 3
+  VPN:
+    tab: VPN

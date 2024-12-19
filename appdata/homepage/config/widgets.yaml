@@ -7,6 +7,16 @@
     memory: true
     disk: /
 
-- search:
-    provider: duckduckgo
-    target: _blank
+
+- openmeteo:
+    units: metric # or imperial
+    latitude: 45.75
+    longitude: 4.85
+    cache: 5 # Time in minutes to cache API responses, to stay within limits
+    format: # optional, Intl.NumberFormat options
+      maximumFractionDigits: 1
+
+- datetime:
+    text_size: xl
+    format:
+      timeStyle: short
