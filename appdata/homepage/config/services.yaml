@@ -31,33 +31,41 @@
             url: udp://asylium.omgcraft.fr
 
 - VPN:
-    - PC Elwan:
+    - Headscale:
+       widgets:
+            - type: headscale
+              url: https://headscale.{{HOMEPAGE_VAR_DOMAINENAME}}
+              nodeId: 1
+              key: {{HOMEPAGE_FILE_HEADSCALE_SECRET}}
+              id: test
+            - type: headscale
+              url: https://headscale.{{HOMEPAGE_VAR_DOMAINENAME}}
+              nodeId: 3
+              key: {{HOMEPAGE_FILE_HEADSCALE_SECRET}}
+
+            - type: headscale
+              url: https://headscale.{{HOMEPAGE_VAR_DOMAINENAME}}
+              nodeId: 13
+              key: {{HOMEPAGE_FILE_HEADSCALE_SECRET}}
+            - type: headscale
+              url: https://headscale.{{HOMEPAGE_VAR_DOMAINENAME}}
+              nodeId: 9
+              key: {{HOMEPAGE_FILE_HEADSCALE_SECRET}}   
+            - type: headscale
+              url: https://headscale.{{HOMEPAGE_VAR_DOMAINENAME}}
+              nodeId: 10
+              key: {{HOMEPAGE_FILE_HEADSCALE_SECRET}}
+- Calendar:
+    - My Calendar:
         widget:
-            type: headscale
-            url: https://headscale.{{HOMEPAGE_VAR_DOMAINENAME}}
-            nodeId: 1
-            key: {{HOMEPAGE_FILE_HEADSCALE_SECRET}}
-    - Asylium Compute:
-        widget:
-            type: headscale
-            url: https://headscale.{{HOMEPAGE_VAR_DOMAINENAME}}
-            nodeId: 3
-            key: {{HOMEPAGE_FILE_HEADSCALE_SECRET}}
-    - Asylium 1:
-        widget:
-            type: headscale
-            url: https://headscale.{{HOMEPAGE_VAR_DOMAINENAME}}
-            nodeId: 13
-            key: {{HOMEPAGE_FILE_HEADSCALE_SECRET}}
-    - Elwan CU:
-        widget:
-            type: headscale
-            url: https://headscale.{{HOMEPAGE_VAR_DOMAINENAME}}
-            nodeId: 9
-            key: {{HOMEPAGE_FILE_HEADSCALE_SECRET}}
-    - Elwan Téléphone:
-        widget:
-            type: headscale
-            url: https://headscale.{{HOMEPAGE_VAR_DOMAINENAME}}
-            nodeId: 10
-            key: {{HOMEPAGE_FILE_HEADSCALE_SECRET}}
+          type: calendar
+          maxEvents: 100
+          showTime: true
+          timezone: Europe/Paris
+          integrations:
+            - type: ical
+              url: https://calendar.google.com/calendar/ical/elwanlefevre.51%40gmail.com/private-e4cd5cfffa9769b26eff301bbf9c07bd/basic.ics
+              name: perso
+              color: blue
+              params:
+                showName: true
