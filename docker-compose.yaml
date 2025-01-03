@@ -33,3 +33,5 @@ include:
 - compose/$HOSTNAME/homepage.yaml
 - compose/$HOSTNAME/paperless.yaml
 - compose/$HOSTNAME/barassistant.yaml
+- compose/$HOSTNAME/asylium_discord_bot.yaml
+- compose/$HOSTNAME/glpi.yaml

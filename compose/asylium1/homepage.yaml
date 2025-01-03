@@ -12,10 +12,13 @@ services:
         ipv4_address: 192.168.91.7
     volumes:
       - $DOCKERDATA/homepage/config:/app/config
+      - $DOCKERDATA/homepage/config/custom.css:/app/config/custom.css
+      - $DOCKERDATA/homepage/config/custom.js:/app/config/custom.js
       - $DOCKERDATA/homepage/images:/app/images
       - $DOCKERDATA/homepage/icons:/app/icons
     secrets:
       - headscale_secret
+
     environment:
       TZ: $TZ
       PUID: 1000
@@ -35,5 +38,5 @@ services:
       - homepage.description=Homepage
       - homepage.name=Homepage
       - homepage.icon=homepage.png
-      - homepage.href=https://$URI_HOMEPAGE.$DOMAINNAME_1
+      - homepage.href=https://github.com/gethomepage/homepage
       - homepage.siteMonitor=https://$URI_HOMEPAGE.$DOMAINNAME_1

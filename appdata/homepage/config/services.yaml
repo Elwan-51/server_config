@@ -32,7 +32,8 @@
 
 - VPN:
     - Headscale:
-       widgets:
+        icon: tailscale.png
+        widgets:
             - type: headscale
               url: https://headscale.{{HOMEPAGE_VAR_DOMAINENAME}}
               nodeId: 1

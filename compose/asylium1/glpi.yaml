@@ -1,0 +1,47 @@
+
+services:
+#MariaDB Container
+  mariadb:
+    profiles: ["core", "all", "dashboard", "glpi"]
+    networks:
+      t_proxy:
+    image: mariadb:10.7
+    container_name: mariadb
+    hostname: mariadb
+    volumes:
+      - $DOCKERDATA/glpi/mysql:/var/lib/mysql
+    env_file:
+      - $DOCKERDIR/env/.glpi_env
+    restart: always
+
+#GLPI Container
+  glpi:
+    image: diouxx/glpi
+    profiles: ["core", "all", "dashboard", "glpi"]
+    container_name : glpi
+    hostname: glpi
+    networks:
+      t_proxy:
+
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - $DOCKERDATA/glpi/glpi:/var/www/html/glpi
+    environment:
+      - TIMEZONE=Europe/Brussels
+      - ServerName=$URI_GLPI.$DOMAINNAME_1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.glpi-rtr.rule=Host(`$URI_GLPI.$DOMAINNAME_1`)"
+      - "traefik.http.routers.glpi-rtr.entrypoints=websecure"
+      - "traefik.http.routers.glpi-rtr.tls=true"
+      - "traefik.http.routers.glpi-rtr.service=glpi-svc"
+      - "traefik.http.services.glpi-svc.loadbalancer.server.port=80"
+      #- "traefik.http.routers.glpi-rtr.middlewares=chain-auth@file"
+      - homepage.group=Documents
+      - homepage.description=glpi
+      - homepage.name=glpi
+      - homepage.icon=glpi.png
+      - homepage.href=https://$URI_GLPI.$DOMAINNAME_1
+      - homepage.siteMonitor=https://$URI_GLPI.$DOMAINNAME_1
+    restart: always

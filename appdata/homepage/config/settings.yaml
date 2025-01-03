@@ -22,6 +22,7 @@ quicklaunch:
 
 layout:
   Bookmarks:
+
   Gaming:
     tab: Gaming
     style: row
@@ -36,3 +37,13 @@ layout:
     columns: 3
   VPN:
     tab: VPN
+    style: row
+    header: false
+  Discord Bot:
+    style: row
+    header: false
+    tab: Discord Bot
+  Calendar:
+    header: false
+
+

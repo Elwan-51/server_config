@@ -16,3 +16,11 @@
     - YouTube:
         - icon: youtube.png
           href: https://youtube.com/
+
+- Useful Repos:
+    - Homepage:
+        - icon: homepage.png
+          href: https://github.com/gethomepage/homepage
+    - Headscale:
+        - icon: tailscale.png
+          href: https://github.com/juanfont/headscale
