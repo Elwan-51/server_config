@@ -35,3 +35,6 @@ include:
 - compose/$HOSTNAME/barassistant.yaml
 - compose/$HOSTNAME/asylium_discord_bot.yaml
 - compose/$HOSTNAME/glpi.yaml
+- compose/$HOSTNAME/dozzle.yaml
+- compose/$HOSTNAME/semaphoreui.yaml
+- compose/$HOSTNAME/api-iot.yaml

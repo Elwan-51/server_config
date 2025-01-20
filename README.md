@@ -46,9 +46,7 @@ Execute the following script : `script/init_alias.sh`
 It will allow you to use the following commands:
 
 - activate_rules : Activate a traefik rules in the rules folder
-- deactivate_rules : Deactivate a traefik rules in the rules folder
 - add_environment : Add and start and application with it's domain name, docker and corresponding rules
-- delete_environment : Remove and stop an application with it's domain name, docker
 
 ### Setup Terraform
 

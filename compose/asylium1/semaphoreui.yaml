@@ -1,0 +1,58 @@
+services:
+  # uncomment this section and comment out the mysql section to use postgres instead of mysql
+  #postgres:
+    #restart: unless-stopped
+    #image: postgres:14
+    #hostname: postgres
+    #volumes: 
+    #  - semaphore-postgres:/var/lib/postgresql/data
+    #environment:
+    #  POSTGRES_USER: semaphore
+    #  POSTGRES_PASSWORD: semaphore
+    #  POSTGRES_DB: semaphore
+  # if you wish to use postgres, comment the mysql service section below 
+  mysql-semaphore:
+    restart: unless-stopped
+    image: mysql:8.0
+    env_file:
+      - $DOCKERDIR/env/.semaphoreui_env
+    volumes:
+      - semaphore-mysql:/var/lib/mysql
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_DATABASE: semaphore
+  semaphore:
+    restart: unless-stopped
+    profiles: ["all", "dashboard", "semaphoreui"]
+    image: semaphoreui/semaphore:latest
+    env_file:
+      - $DOCKERDIR/env/.semaphoreui_env
+    environment:
+      SEMAPHORE_DB_USER: semaphore
+      SEMAPHORE_DB_HOST: mysql-semaphore # for postgres, change to: postgres
+      SEMAPHORE_DB_PORT: 3306 # change to 5432 for postgres
+      SEMAPHORE_DB_DIALECT: mysql # for postgres, change to: postgres
+      SEMAPHORE_DB: semaphore
+      SEMAPHORE_PLAYBOOK_PATH: /tmp/semaphore/
+      SEMAPHORE_ADMIN_NAME: admin
+      SEMAPHORE_ADMIN_EMAIL: elwan.lefevre@asylium.fr
+      SEMAPHORE_ADMIN: admin
+      TZ: $TZ
+    depends_on:
+      - mysql-semaphore # for postgres, change to: postgres
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.semaphoreui-rtr.rule=Host(`$URI_SEMAPHOREUI.$DOMAINNAME_1`)"
+      - "traefik.http.routers.semaphoreui-rtr.entrypoints=websecure"
+      - "traefik.http.routers.semaphoreui-rtr.tls=true"
+      - "traefik.http.routers.semaphoreui-rtr.service=semaphoreui-svc"
+      - "traefik.http.services.semaphoreui-svc.loadbalancer.server.port=3000"
+      - "traefik.http.routers.semaphoreui-rtr.middlewares=chain-no-auth@file"
+      - homepage.group=Documents
+      - homepage.description=semaphoreui application
+      - homepage.name=semaphoreui
+      - homepage.icon=semaphoreui.png
+      - homepage.href=https://$URI_SEMAPHOREUI.$DOMAINNAME_1
+      - homepage.siteMonitor=https://$URI_SEMAPHOREUI.$DOMAINNAME_1
+volumes:
+  semaphore-mysql: # to use postgres, switch to: semaphore-postgres

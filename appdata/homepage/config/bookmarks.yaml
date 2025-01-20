@@ -6,6 +6,12 @@
     - Github:
         - abbr: GH
           href: https://github.com/
+    - Azure Portal:
+        - icon: azure.png
+          href: https://portal.azure.com/
+    - Quickref Me:
+        - icon: https://quickref.me/images/favicon.png?v=1
+          href: https://cheatsheets.zip/
 
 - Social:
     - Reddit:

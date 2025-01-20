@@ -1,0 +1,77 @@
+
+services:
+#MariaDB Container
+  postgresql:
+    profiles: ["core", "all", "iot_cpe"]
+    networks:
+      t_proxy:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+    env_file:
+      - $DOCKERDIR/env/.iot-cpe_env
+    restart: always
+
+#iot-cpe Container
+  iot-cpe:
+    image: furiell/iot-cpe:dev
+    profiles: ["core", "all","iot_cpe"]
+    container_name : iot-cpe
+    hostname: iot-cpe
+    networks:
+      t_proxy:
+    environment:
+      - TIMEZONE=Europe/Brussels
+    env_file:
+      - $DOCKERDIR/env/.iot-cpe_env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.iot-cpe-rtr.rule=Host(`$URI_IOT_CPE.$DOMAINNAME_1`)"
+      - "traefik.http.routers.iot-cpe-rtr.entrypoints=websecure"
+      - "traefik.http.routers.iot-cpe-rtr.tls=true"
+      - "traefik.http.routers.iot-cpe-rtr.service=iot-cpe-svc"
+      - "traefik.http.services.iot-cpe-svc.loadbalancer.server.port=80"
+      - homepage.group=Documents
+      - homepage.description=iot-cpe
+      - homepage.name=iot-cpe
+      - homepage.icon=iot-cpe.png
+      - homepage.href=https://$URI_IOT_CPE.$DOMAINNAME_1
+      - homepage.siteMonitor=https://$URI_IOT_CPE.$DOMAINNAME_1
+    restart: always
+
+  grafana:
+    image: grafana/grafana:latest
+    profiles: ["core", "all", "grafana"]
+    container_name: grafana
+    hostname: grafana
+    restart: unless-stopped
+    user: 1000:1000
+    environment:
+      GF_SERVER_ROOT_URL: "https://$URI_GRAFANA.$DOMAINNAME_1"
+      GF_LOG_MODE: console file
+      GF_LOG_LEVEL: info
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - grafana-log:/var/log/grafana
+    networks:
+      t_proxy:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana-rtr.rule=Host(`$URI_GRAFANA.$DOMAINNAME_1`)"
+      - "traefik.http.routers.grafana-rtr.entrypoints=websecure"
+      - "traefik.http.routers.grafana-rtr.tls=true"
+      - "traefik.http.routers.grafana-rtr.service=grafana-svc"
+      - "traefik.http.services.grafana-svc.loadbalancer.server.port=3000"
+      - homepage.group=Documents
+      - homepage.description=grafana
+      - homepage.name=grafana
+      - homepage.icon=grafana.png
+      - homepage.href=https://$URI_GRAFANA.$DOMAINNAME_1
+      - homepage.siteMonitor=https://$URI_GRAFANA.$DOMAINNAME_1
+
+volumes:
+  postgresql-data:
+  grafana-data:
+  grafana-log:

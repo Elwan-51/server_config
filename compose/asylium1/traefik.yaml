@@ -43,7 +43,7 @@ services:
       - --providers.docker.endpoint=tcp://socket-proxy:2375 # Enable for Socket Proxy. Disable otherwise.
       - --providers.docker.exposedByDefault=false
       - --providers.docker.network=t_proxy 
-      - --providers.swarm.endpoint=tcp://127.0.0.1:2377
+      - --providers.swarm.endpoint=tcp://socket-proxy:2375
       - --providers.swarm.exposedByDefault=false
 #      - --providers.docker.swarmMode=false
 #      - --providers.swarm.endpoint=tcp://127.0.0.1:2377 # Traefik v3 Swarm

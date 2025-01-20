@@ -43,7 +43,7 @@ services:
       - PLUGINS=0
       - SERVICES=1 # Portainer
       - SESSION=0
-      - SWARM=0
+      - SWARM=1
       - SYSTEM=0
       - TASKS=1 # Portainer
       - VOLUMES=1 # Portainer
